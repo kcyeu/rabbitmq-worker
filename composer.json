@@ -1,0 +1,23 @@
+{
+    "name": "kcyeu/rabbitmq-worker-php",
+    "description": "RabbitMQ worker as a daemon, which uses RedisCluster backend.",
+    "authors": [
+        {
+            "name": "Gordon Yeu",
+            "email": "kmd@mikuru.tw"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:kcyeu/redlock-php.git"
+        }
+    ],
+    "require": {
+        "shaneharter/php-daemon": "dev-master",
+        "ronnylt/redlock-php": "dev-cluster",
+        "videlalvaro/php-amqplib": "dev-master"
+    },
+    "autoload": {
+    }
+}
