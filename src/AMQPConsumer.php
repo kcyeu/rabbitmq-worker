@@ -61,7 +61,13 @@ class AMQPConsumer implements \Core_IWorker
      * Array of results
      * @var array
      */
-    private $results = array();
+    private $_results = array();
+
+    /**
+     * Data persistence for callback access
+     * @var array
+     */
+    private $_data;
 
     /**
      * Called on Construct or Init
@@ -84,11 +90,6 @@ class AMQPConsumer implements \Core_IWorker
      */
     public function teardown()
     {
-        $this->mediator->log('======Tear Down=====');
-        //$this->_amqp_ch->close();
-        //$this->_amqp_conn->close();
-
-        //$this->_redis->close();
     }
 
     /**
@@ -124,22 +125,18 @@ class AMQPConsumer implements \Core_IWorker
     public function poll(Array $existing_results = array())
     {
         // uncomment this if you need to handle accumulated result
-        //$this->results = $existing_results;
+        //$this->_results = $existing_results;
 
+        // Start main logic of workers
         $this->mediator->log('Calling AMQPConsumer...');
 
-        $data = array();
-
         // Consuming queue
-        $result = $this->_consume_jobs($data);
+        $result = $this->_consume_jobs();
 
         // Save to redis
-        $result = $this->_save_to_redis($data);
+        $result = $this->_save_to_redis();
 
-        // Increase the stats in our results array accordingly
-        $this->results['data'] = $data['sm_seq'];
-
-        return $this->results;
+        return $this->_results;
     }
 
     private function _amqp_setup()
@@ -206,7 +203,6 @@ class AMQPConsumer implements \Core_IWorker
             false,
             array($this, 'mq_callback')
         );
-
     }
 
     private function _redis_setup()
@@ -235,35 +231,44 @@ class AMQPConsumer implements \Core_IWorker
         $this->_redlock = new \RedLock($redlock_config);
     }
 
-    private function _consume_jobs(&$data)
+    public function mq_callback($msg)
     {
-        $data['sm_seq'] = 'foo';
-        $this->_amqp_ch->wait();
-    }
+        // Extract info from message body
+        $msg_json = $msg->body;
+        $this->mediator->log("Message body: {$msg_json}");
 
-    static public function mq_callback($msg)
-    {
-        echo "\n--------\n";
-        echo $msg->body;
-        echo "\n--------\n";
+        // Put info into $this->_data
+        // keep callback short and clean,
+        // leave complex logics in _consume_jobs()
+        $this->_data = array('sm_seq' => 'bar');
 
         $msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
-            
     }
 
-    private function _save_to_redis($data)
+    private function _consume_jobs()
     {
-        $key = $data['sm_seq'];
+        // Trigger mq_callback
+        $this->_amqp_ch->wait();
+
+        // Process info from MQ
+        $tmp = $this->_data['sm_seq'];
+
+        //
+    }
+
+    private function _save_to_redis()
+    {
+        $key = $this->_data['sm_seq'];
 
         // Use RedLock if needed before access Redis
         while (true)
         {
             $lock = $this->_redlock->lock("{$key}.lock", $this->_redlock_timeout);
-//            $lock = $this->_redlock->lock("{$key}.lock", 10000);
 
             if ($lock)
             {
                 // Do something here
+                /*
                 $result = $this->_redis->get($key);
                 $this->mediator->log("Read result : {$result}");
 
@@ -272,6 +277,7 @@ class AMQPConsumer implements \Core_IWorker
 
                 $result = $this->_redis->get($key);
                 $this->mediator->log("Read result : {$result}");
+                */
 
                 $this->_redlock->unlock($lock);
                 break;

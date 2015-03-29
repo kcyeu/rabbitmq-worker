@@ -52,7 +52,6 @@ class Daemon extends \Core_Daemon
         $this->AmqpConsumer->onReturn(function($call, $log) use($that) {
             if ($call->method == 'poll') {
                 $that->set_results($call->return);
-                $log("AMQPConsumer Results Updated...");
             }
         });
 
