@@ -1,6 +1,6 @@
 #!/usr/bin/php
 <?php
-require_once '/opt/composer_pkg/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 // Assistive helpers, not necessary
 //require_once 'config.php';
