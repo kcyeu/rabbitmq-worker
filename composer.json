@@ -26,9 +26,10 @@
     ],
     "require": {
         "shaneharter/php-daemon": "dev-master",
-        "ronnylt/redlock-php": "dev-cluster",
+        "ronnylt/redlock-php": "dev-master",
         "videlalvaro/php-amqplib": "dev-master"
     },
+    "minimum-stability": "dev",
     "autoload": {
     }
 }
