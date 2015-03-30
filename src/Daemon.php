@@ -29,7 +29,7 @@ class Daemon extends \Core_Daemon
      */
 	protected function setup_plugins()
 	{
-        $this->plugin('Lock_File');
+        $this->plugin('Lock_Shm');
 
         $ini = $this->plugin('ini');
         $this->ini->filename = __DIR__ . self::CONFIG_FILE;

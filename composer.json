@@ -21,11 +21,11 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com:kcyeu/redlock-php.git"
+            "url": "git@github.com:kcyeu/PHP-Daemon.git"
         }
     ],
     "require": {
-        "shaneharter/php-daemon": "dev-master",
+        "shaneharter/php-daemon": "dev-bugfix",
         "kcyeu/php-redlock": "dev-master",
         "videlalvaro/php-amqplib": "dev-master"
     },
