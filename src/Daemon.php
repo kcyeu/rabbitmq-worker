@@ -29,11 +29,11 @@ class Daemon extends \Core_Daemon
      */
 	protected function setup_plugins()
 	{
-          $this->plugin('Lock_File');
+        $this->plugin('Lock_File');
 
-	      $ini = $this->plugin('ini');
-	      $this->ini->filename = __DIR__ . self::CONFIG_FILE;
-	      $this->ini->required_sections = array('amqp','redis','redlock');
+        $ini = $this->plugin('ini');
+        $this->ini->filename = __DIR__ . self::CONFIG_FILE;
+        $this->ini->required_sections = array('amqp','redis','redlock');
 	}
 
     protected function setup_workers()
