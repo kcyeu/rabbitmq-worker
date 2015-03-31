@@ -19,7 +19,7 @@ Features
 --------
 
 - Redis as data storage
-- Share memory lock which prevents duplicate instance
+- Shared memory lock which prevents duplicate instance
 - Support signal
 - Configurable worker count
 
