@@ -4,7 +4,7 @@ RabbitMQ-Worker
 
 > RabbitMQ-Worker as daemon written in PHP.
 
-RabbitMQ-Worker consumes and digests messages from RabbitMQ and save the result to RedisCluster, RedLock algorithm was adopted for distributed lock.
+RabbitMQ-Worker runs as a daemon. It consumes and digests messages from RabbitMQ then save result to RedisCluster, RedLock algorithm was adopted for distributed lock.
 
 Table of Contents
 -----------------
