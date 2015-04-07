@@ -60,6 +60,11 @@ Changelog
 ### 1.0.0 (Mar 30, 2015)
 - Debut
 
+Tested Environment
+------------------
+ * Ubuntu 14.04.2 LTS
+ * CentOS 6
+
 Contributing
 ------------
 
